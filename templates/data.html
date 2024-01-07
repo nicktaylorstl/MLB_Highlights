@@ -1,4 +1,19 @@
-{% for key,value in form_data.items() %}
-<h2> {{key}}</h2>
-<p> {{value}}</p>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Highlights</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+<body>
+    {% for key, value in form_data.items() %}
+    <p>{{ key }}: {{ value }}</p>
+    <p></p>
+    {% endfor %}
+
+    <!-- Include your highlights using the 'highlights' variable -->
+    <p> {{ highlights | safe }}</p>
+
+</body>
+</html>

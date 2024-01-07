@@ -4,14 +4,13 @@ import statsapi
 import operator
 import json
 from flask import Flask,render_template,request
+from waitress import serve
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    print("Enter a player name")
-    player = input()
-    return(f"you chose, {player}")
+    return render_template('index.html')
 
 @app.route('/form')
 def form():
@@ -90,8 +89,9 @@ def data():
         title = highlight_list[0]
         description = highlight_list [1]
         url = highlight_list [2]
-        highlights += title + "<br>" + description + "<br>" + f"<a href={url}>Watch Video</a>" +"<br>"+"<br>"
-    return highlights
+        highlights += title + "<br>" + description + "<br>" + f"<a href={url} target='_blank'>Watch Video</a>" +"<br>"+"<br>"
+    return render_template('data.html', form_data=form_data, highlights=highlights)
+
     
 
 
@@ -102,4 +102,4 @@ def data():
 #         print(highlight+ '\n')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    serve(app, host="0.0.0.0", port=8000)

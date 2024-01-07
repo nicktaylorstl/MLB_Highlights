@@ -1,6 +1,23 @@
-<form action="/data" method = "POST">
-    <p>Player Name <input type = "text" name = "Player Name" /></p>
-    <p>Team <input type = "text" name = "Team" /></p>
-    <p>Date <input type = "date" name = "Date" /></p>
-    <p><input type = "submit" value = "Submit" /></p>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlights Input Form</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <form action="/data" method = "POST">
+        <p>Player Name <input type = "text" name = "Player Name" /></p>
+        <p>Team <input type = "text" name = "Team" /></p>
+        <p>Date <input type = "date" name = "Date" /></p>
+        <p><input type = "submit" value = "Submit" /></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p>Hint: You can just put a single space in the player field to get all highlights from the team on that day.</p>
+    
+    </form>
+</body>
+</html>
