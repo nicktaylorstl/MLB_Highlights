@@ -16,7 +16,7 @@ body {
     font-size: large;
 }
 
-input, button {
+input, button ,select{
     font-size: large;
     padding: 1rem;
     border-radius: 10px;
