@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Highlights</title>
-    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles/style3.css') }}" rel="stylesheet" />
 </head>
 <body>
-    {% for key, value in form_data.items() %}
-    <p>{{ key }}: {{ value }}</p>
-    <p></p>
-    {% endfor %}
-
+    <h1>
+        {% for key, value in form_data.items() %}
+            {{ key }}: {{ value }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </h1>
     <!-- Include your highlights using the 'highlights' variable -->
     <p> {{ highlights | safe }}</p>
 

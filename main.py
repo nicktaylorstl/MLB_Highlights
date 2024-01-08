@@ -24,7 +24,10 @@ def data():
         form_data = request.form
         team = form_data['Team']
         player = form_data['Player Name']
-        date = form_data['Date']
+        form_year = form_data['Year']
+        form_month = form_data['Month']
+        form_day = form_data['Day']
+        date = f"{form_year}-{form_month}-{form_day}"
         year = int(date[:4])
         month = int(date[5:7])
         day = int(date[8:])
@@ -46,7 +49,7 @@ def data():
             schedule = statsapi.schedule(start_date=f"01/01/{year}",end_date=f"12/31/{year}",team= team_ID)
         elif day == 0:
             schedule = statsapi.schedule(start_date=f"{month}/01/{year}",end_date=f"{month}/31/{year}",team= team_ID)
-        elif month ==0:
+        elif month == 0:
             schedule = statsapi.schedule(start_date=f"01/{day}/{year}",end_date=f"12/{day}/{year}",team= team_ID)
         else: 
             schedule = statsapi.schedule(start_date=f"{month}/{day}/{year}",end_date=f"{month}/{day}/{year}",team= team_ID)
@@ -86,10 +89,16 @@ def data():
     highlights_group = get_player_highlights(player,team,year,month,day)
     highlights = ""
     for highlight_list in highlights_group:
-        title = highlight_list[0]
-        description = highlight_list [1]
-        url = highlight_list [2]
-        highlights += title + "<br>" + description + "<br>" + f"<a href={url} target='_blank'>Watch Video</a>" +"<br>"+"<br>"
+        if len(highlight_list) >= 2:
+            title = highlight_list[0]
+            description = highlight_list [1]
+            url = highlight_list [2]
+            highlights += title + "<br>" + description + "<br>" + f"<a href={url} target='_blank'>Watch Video</a>" +"<br>"+"<br>"
+        else: 
+            title = highlight_list[0]
+            description = highlight_list [0]
+            url = highlight_list [0]
+            highlights += title + "<br>" + description + "<br>" + f"<a href={url} target='_blank'>Watch Video</a>" +"<br>"+"<br>"
     return render_template('data.html', form_data=form_data, highlights=highlights)
 
     

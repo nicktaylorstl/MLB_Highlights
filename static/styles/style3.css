@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 2rem;
+    background-color: #333;
+    color: whitesmoke;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+}
+
+h1 {
+    font-size: 1.5rem; /* Set the desired font size for h1 */
+    display: inline; /* Display h1 content on the same line */
+    color: rgb(218, 204, 20);
+}
+
+input, button {
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 10px;
+}
