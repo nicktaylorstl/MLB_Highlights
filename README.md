@@ -8,3 +8,9 @@ With the webapp you can select a player name and a specific date or a full month
 You can access it here https://mlb-highlights.onrender.com/
 
 If you want to see two great catches, search for Tommy Edman - St. Louis Cardinals - 2023 June 29
+
+I am currently working on adding the data to a separate database (currently using BigQuery) so that the website can query my own database instead of calling the API each time. This will make website queries faster and also allow more freedom in the types of queries I can create. 
+
+Currently it's set up with daily_highlights.py calling the MLB_Stats api and putting the highlights from the previous day into BigQuery and also two csv files game_data_2024_pre.csv and highlights_2024_pre.csv 
+
+There will also eventually be calls to the Yahoo Sports API to get the team rosters from my fantasy baseball league in order to get the highlights for all players on a specific fantasy team. 
