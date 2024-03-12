@@ -13,4 +13,4 @@ I am currently working on adding the data to a separate database (currently usin
 
 Currently it's set up with daily_highlights.py calling the MLB_Stats api and putting the highlights from the previous day into BigQuery and also two csv files game_data_2024_pre.csv and highlights_2024_pre.csv 
 
-There will also eventually be calls to the Yahoo Sports API to get the team rosters from my fantasy baseball league in order to get the highlights for all players on a specific fantasy team. 
+daily_highlights.py now includes functions to retrieve the roster information from our fantasy baseball league using Yahoo Sports API, and add this to a table in Big Query, so that we can query the highlights based on which fantasy baseball team a player is on. 

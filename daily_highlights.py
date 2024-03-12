@@ -6,7 +6,9 @@ from datetime import datetime, timedelta
 import unidecode
 from google.cloud import bigquery
 from google.oauth2 import service_account
+import re
 
+yahoo_rosters_filepath = "data/daily_yahoo_rosters.csv"
 highlights_filepath = "data/highlights_2024_pre.csv"
 game_data_filepath = "data/game_data_2024_pre.csv"
 bigquery_table_id = '2024_pre'
@@ -136,6 +138,21 @@ def game_data_to_bigquery(gamedata):
     else:
         print('Errors occurred during data insertion:', errors)
 
+def yahoo_roster_to_bigquery(roster_update):
+    dataset_id = 'yahoo_rosters'
+    table_id = bigquery_table_id
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+    table = client.get_table(table_ref)
+
+    # Insert data into BigQuery table
+    errors = client.insert_rows(table, roster_update)
+
+    if not errors:
+        print('Data inserted successfully.')
+    else:
+        print('Errors occurred during data insertion:', errors)
+
 
 def is_game_id_present(new_game_id):
 
@@ -149,12 +166,49 @@ def is_game_id_present(new_game_id):
                 return True
     return False
 
+def update_yahoo_roster(date):
+    def remove_parentheses(input_string):
+        pattern = r'\s*\([^)]*\)'
+        result = re.sub(pattern, '', input_string)
+        
+        return result
+
+    def roster_to_csv(highlight_str, filepath):
+        with open(filepath, 'a', newline='',encoding='utf-8') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(highlight_str)
+
+    teams = {}
+
+    with open('data/teams.csv', newline='',encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            teams[int(row['team_id'])] = {"name": row["name"], "roster":[]}
+
+    with open('data/rosters.csv', newline='',encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            date = date
+            team_id = int(row['team_code'][14:])
+            team_name = unidecode.unidecode(teams[team_id]["name"])
+            mlb_team_name = row['editorial_team_full_name']
+            full_name = unidecode.unidecode(row['full_name'])
+            player_name = remove_parentheses(full_name)
+            primary_position = row['primary_position']
+            teams[team_id]["roster"].append(full_name)
+            time_of_insertion = datetime.now()
+            inserted = time_of_insertion.strftime('%Y-%m-%d %H:%M:%S')
+            roster_update = date,team_id,team_name,mlb_team_name,player_name,primary_position,inserted
+            roster_to_csv(roster_update,yahoo_rosters_filepath)
+            print(roster_update)
+            yahoo_roster_to_bigquery([roster_update])
+
 def game_insert(game_id):
     game_data_insert(game_id)
     game_highlights_insert(game_id)
 
 
-dates = ['2024-02-23','2024-02-24','2024-02-25','2024-02-26','2024-02-27','2024-02-28','2024-02-29','2024-03-01','2024-03-02','2024-03-03','2024-03-04','2024-03-05']
+dates = ['2024-02-22','2024-02-23','2024-02-24','2024-02-25','2024-02-26','2024-02-27','2024-02-28','2024-02-29','2024-03-01','2024-03-02','2024-03-03','2024-03-04','2024-03-05','2024-03-06','2024-03-07','2024-03-08','2024-03-09','2024-03-10']
 
 pull_date = yesterday()
 
@@ -164,3 +218,5 @@ for game in csv_game_ids:
         print(f"Game ID {game} was already inserted")
         continue
     game_insert(game)
+
+update_yahoo_roster(pull_date)
