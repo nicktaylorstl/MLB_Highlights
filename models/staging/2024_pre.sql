@@ -1,3 +1,5 @@
+{{config(materialized = 'table')}}
+
 with source as 
     (select g.game_id, g.date, g.away_name, g.home_name, h.player_name, h.headline, h.description, h.mp4_url 
     from `mlbhighlights`.`highlights`.`2024_pre` as h
