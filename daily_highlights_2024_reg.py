@@ -10,10 +10,10 @@ import re
 # from dbt.cli.main import dbtRunner, dbtRunnerResult
 
 
-yahoo_rosters_filepath = "data/daily_yahoo_rosters.csv"
-highlights_filepath = "data/highlights_2024_pre.csv"
-game_data_filepath = "data/game_data_2024_pre.csv"
-bigquery_table_id = '2024_pre'
+yahoo_rosters_filepath = "data/yahoo_rosters_2024_reg.csv"
+highlights_filepath = "data/highlights_2024_reg.csv"
+game_data_filepath = "data/game_data_2024_reg.csv"
+bigquery_table_id = '2024_reg'
 
 time_of_insertion = datetime.now()
 inserted = time_of_insertion.strftime('%Y-%m-%d %H:%M:%S')
@@ -95,8 +95,9 @@ def get_game_Ids(date):
     schedule = statsapi.schedule(date)
     game_ids = []
     for game in schedule:
-        game_ids.append(game['game_id'])
-    return game_ids
+        if game['game_type']=="R":
+            game_ids.append(game['game_id'])
+    return schedule
 
 def dbt_run():
     dbt = dbtRunner()
