@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLB Highlights</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <h1>Welcome to Cool WHIP Highlights</h1>
+    <h2>MLB Highlights</h2>
+    <ul>
+        <li><a href="{{ url_for('team_page', team_id=1,date=date) }}">Nick</a></li>
+        <li><a href="{{ url_for('team_page', team_id=2,date=date) }}">Phillip</a></li>
+        <li><a href="{{ url_for('team_page', team_id=3,date=date) }}">Andrew</a></li>
+        <li><a href="{{ url_for('team_page', team_id=4,date=date) }}">Josh</a></li>
+        <li><a href="{{ url_for('team_page', team_id=5,date=date) }}">Wesley</a></li>
+        <li><a href="{{ url_for('team_page', team_id=6,date=date) }}">Becky</a></li>
+        <li><a href="{{ url_for('team_page', team_id=7,date=date) }}">Nate</a></li>
+        <li><a href="{{ url_for('team_page', team_id=8,date=date) }}">Paul</a></li>
+        <li><a href="{{ url_for('team_page', team_id=9,date=date) }}">Lonnie</a></li>
+        <li><a href="{{ url_for('team_page', team_id=10,date=date) }}">Caleb</a></li>
+        
+    </ul>
+</body>
+</html>

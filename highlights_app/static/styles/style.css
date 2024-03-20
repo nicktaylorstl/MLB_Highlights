@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 2rem;
+    background-color: #333;
+    color: whitesmoke;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    font-size: 2rem;
+}
+/* Default link style */
+a {
+    color: whitesmoke; /* Default color for links */
+    text-decoration: underline; /* Remove underline */
+}
+
+/* Visited link style */
+a:visited {
+    color: gray; /* Color for visited links */
+}
+
+/* Style for buttons */
+button {
+    font-size: 1.5rem; /* Adjust the font size as needed */
+    padding: 0.5rem 1rem; /* Adjust the padding as needed */
+    border-radius: 5px; /* Adjust the border radius as needed */
+    margin-right: 1rem; /* Adjust the margin between buttons */
+}
+
+input {
+    font-size: 1.5rem; /* Adjust the font size as needed */
+    padding: 0.5rem; /* Adjust the padding as needed */
+    border-radius: 5px; /* Adjust the border radius as needed */
+}
+
+/* Additional styles for button container */
+.button-container {
+    display: flex;
+}

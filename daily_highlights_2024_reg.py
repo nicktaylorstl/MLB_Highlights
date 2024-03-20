@@ -99,18 +99,6 @@ def get_game_Ids(date):
             game_ids.append(game['game_id'])
     return schedule
 
-def dbt_run():
-    dbt = dbtRunner()
-
-    # create CLI args as a list of strings
-    cli_args = ["run", "--select", "tag:my_tag"]
-
-    # run the command
-    res: dbtRunnerResult = dbt.invoke(cli_args)
-
-    # inspect the results
-    for r in res.result:
-        print(f"{r.node.name}: {r.status}")
 
 
 # WRITING THE DATA TO BIG QUERY

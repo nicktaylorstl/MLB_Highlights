@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{team_owner}} Highlights</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <div class="button-container">
+        <button id="prevDateBtn">Previous Date</button>
+        <button id="nextDateBtn">Next Date</button>
+    </div>
+
+    
+    {% if highlights %}
+        <h1> {{highlights[0][5]}}</h1>
+        <h2> {{date}}</h2>
+        <ul>
+            {% for highlight in highlights %}
+            <strong>{{ highlight[0] }} - {{ highlight[6] }}</strong><br> <!-- Player Name -->
+            {{ highlight[2] }}<br> <!-- Headline -->
+            {{ highlight[3] }}<br> <!-- Description -->
+            <video width="640" height="480" controls>
+                <source src="{{ highlight[4] }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video><br> <!-- Embedded Video -->
+            <br>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>{{date}}</h2>
+        <p>This team had no highlights on this date</p>
+    {% endif %}
+
+    
+    
+</body>
+</html>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the button element
+        var nextDateBtn = document.getElementById("nextDateBtn");
+        
+        // Add an event listener to the button
+        nextDateBtn.addEventListener("click", function() {
+            // Get the current URL
+            var currentUrl = window.location.href;
+            
+            // Split the URL into parts
+            var parts = currentUrl.split("/");
+            
+            // Get the team ID and current date
+            var teamId = parts[parts.length - 2];
+            var currentDate = parts[parts.length - 1];
+            
+            // Convert the current date string to a Date object
+            var dateObj = new Date(currentDate);
+            
+            // Increment the date by one day
+            dateObj.setDate(dateObj.getDate() + 1);
+            
+            // Format the new date as "YYYY-MM-DD"
+            var newDate = dateObj.toISOString().split("T")[0];
+            
+            // Construct the new URL
+            var newUrl = parts.slice(0, -1).join("/") + "/" + newDate;
+            
+            // Redirect to the new URL
+            window.location.href = newUrl;
+        });
+    });
+    </script>   
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the button element
+        var nextDateBtn = document.getElementById("prevDateBtn");
+        
+        // Add an event listener to the button
+        nextDateBtn.addEventListener("click", function() {
+            // Get the current URL
+            var currentUrl = window.location.href;
+            
+            // Split the URL into parts
+            var parts = currentUrl.split("/");
+            
+            // Get the team ID and current date
+            var teamId = parts[parts.length - 2];
+            var currentDate = parts[parts.length - 1];
+            
+            // Convert the current date string to a Date object
+            var dateObj = new Date(currentDate);
+            
+            // Increment the date by one day
+            dateObj.setDate(dateObj.getDate() - 1);
+            
+            // Format the new date as "YYYY-MM-DD"
+            var newDate = dateObj.toISOString().split("T")[0];
+            
+            // Construct the new URL
+            var newUrl = parts.slice(0, -1).join("/") + "/" + newDate;
+            
+            // Redirect to the new URL
+            window.location.href = newUrl;
+        });
+    });
+    </script>   
