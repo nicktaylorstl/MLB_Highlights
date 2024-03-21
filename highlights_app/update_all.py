@@ -16,3 +16,4 @@ for game in csv_game_ids:
 r.update_yahoo_roster(pull_date)
 sq.update_sqlite() 
 sq.update_final_table()
+sq.copy_database()

@@ -1,9 +1,12 @@
 import sqlite3
 import pandas as pd
 import project_variables as pv
+import shutil
+
 
 season_id = pv.season_id
 database_filepath = pv.database_filepath
+website_database = pv.website_database
 def update_sqlite():
     game_data_df = pd.read_csv(f'data/game_data_{season_id}.csv')
     highlights_df = pd.read_csv(f'data/highlights_{season_id}.csv')
@@ -55,3 +58,7 @@ def update_final_table():
     print(f"yahoo_highlights_{season_id} was updated")
     conn.commit()
     conn.close()
+
+def copy_database():
+    shutil.copyfile(database_filepath, website_database)
+    print(f"Database copied from {database_filepath} to {website_database}")

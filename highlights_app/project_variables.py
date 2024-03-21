@@ -13,6 +13,7 @@ credentials = service_account.Credentials.from_service_account_file(
 )
 
 database_filepath = 'data/MLB_Highlights.db'
+website_database = '../CoolWHIPHighlights/MLB_Highlights.db'
 
 def yesterday(frmt='%Y-%m-%d', string=True):
     yesterday = datetime.now() - timedelta(1)
