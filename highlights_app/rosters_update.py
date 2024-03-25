@@ -7,6 +7,7 @@ from google.oauth2 import service_account
 import re
 import project_variables as pv
 
+full_path = pv.full_path
 season_id = pv.season_id
 yahoo_rosters_filepath = pv.yahoo_rosters_filepath
 highlights_filepath = pv.highlights_filepath
@@ -59,16 +60,16 @@ def update_yahoo_roster(date):
         with open(filepath, 'a', newline='',encoding='utf-8') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(roster_update)
-            yahoo_roster_to_bigquery([roster_update])
+            # yahoo_roster_to_bigquery([roster_update])
 
     teams = {}
 
-    with open('data/teams.csv', newline='',encoding='utf-8') as csvfile:
+    with open(f'{full_path}data/teams.csv', newline='',encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             teams[int(row['team_id'])] = {"name": row["name"], "roster":[]}
 
-    with open('data/rosters.csv', newline='',encoding='utf-8') as csvfile:
+    with open(f'{full_path}data/rosters.csv', newline='',encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             date = date

@@ -3,14 +3,14 @@ import pandas as pd
 import project_variables as pv
 import shutil
 
-
+full_path = pv.full_path
 season_id = pv.season_id
 database_filepath = pv.database_filepath
 website_database = pv.website_database
 def update_sqlite():
-    game_data_df = pd.read_csv(f'data/game_data_{season_id}.csv')
-    highlights_df = pd.read_csv(f'data/highlights_{season_id}.csv')
-    rosters_df = pd.read_csv(f'data/yahoo_rosters_{season_id}.csv')
+    game_data_df = pd.read_csv(f'{full_path}data/game_data_{season_id}.csv')
+    highlights_df = pd.read_csv(f'{full_path}data/highlights_{season_id}.csv')
+    rosters_df = pd.read_csv(f'{full_path}data/yahoo_rosters_{season_id}.csv')
 
     conn = sqlite3.connect(database_filepath)
     game_data_df.to_sql(f'game_data_{season_id}', conn, if_exists='replace')
@@ -25,7 +25,7 @@ def update_final_table():
     res = cur.execute(f"""
                     with source as 
                         (select g.game_id, g.date, g.away_name, g.home_name, h.player_name, h.headline, h.description, h.mp4_url 
-                        from highlights_2024_pre as h
+                        from highlights_{season_id} as h
                         LEFT join game_data_{season_id} as g on g.game_id = h.game_id)
 
                     select s.*, y.team_id, y.team_name as yahoo_team_name, y.mlb_team_name,y.primary_position

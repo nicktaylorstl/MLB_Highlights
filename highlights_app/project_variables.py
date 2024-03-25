@@ -1,19 +1,19 @@
 from google.oauth2 import service_account
 import json
-
-season_id = '2024_pre'
-yahoo_rosters_filepath = f"data/yahoo_rosters_{season_id}.csv"
-highlights_filepath = f"data/highlights_{season_id}.csv"
-game_data_filepath = f"data/game_data_{season_id}.csv"
+full_path = "D:/Documents/GFA/SportsPython/Baseball/MLB_Highlights/"
+season_id = '2024'
+yahoo_rosters_filepath = f"{full_path}data/yahoo_rosters_{season_id}.csv"
+highlights_filepath = f"{full_path}data/highlights_{season_id}.csv"
+game_data_filepath = f"{full_path}data/game_data_{season_id}.csv"
 bigquery_table_id = season_id
 from datetime import datetime, timedelta
 
 credentials = service_account.Credentials.from_service_account_file(
-    'secrets/google_key.json'
+    f"{full_path}secrets/google_key.json"
 )
 
-database_filepath = 'data/MLB_Highlights.db'
-website_database = '../CoolWHIPHighlights/MLB_Highlights.db'
+database_filepath = f'{full_path}data/MLB_Highlights.db'
+website_database = 'D:/Documents/GFA/SportsPython/Baseball/CoolWHIPHighlights/MLB_Highlights.db'
 
 def yesterday(frmt='%Y-%m-%d', string=True):
     yesterday = datetime.now() - timedelta(1)

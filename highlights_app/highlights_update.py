@@ -46,7 +46,8 @@ def game_data_insert(game_id):
     with open(game_data_filepath, 'a', newline='',encoding='utf-8') as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(game_data)
-    game_data_to_bigquery([game_data])
+        print(f"{game_id} written to CSV")
+    # game_data_to_bigquery([game_data])
 
 # write all the highlights from one game to a csv
 def game_highlights_insert(game_id):
@@ -78,14 +79,27 @@ def game_highlights_insert(game_id):
             player_info = [(0, 'NA')]
         player_id = player_info[0][0]
         player_name = unidecode.unidecode(player_info[0][1])
+        player_name = remove_jr_suffix(player_name)
+        player_name = remove_II_suffix(player_name)
 
 
         highlight_list = [game_id,date,player_name,player_id,headline,blurb,description,mp4_url,duration,inserted]
     
         highlight_to_csv(highlight_list,highlights_filepath)
-        highlight_to_bigquery([highlight_list])
+        print(f"highlight for {game_id} written to csv")
+        # highlight_to_bigquery([highlight_list])
 
-
+def remove_jr_suffix(name):
+    if name.endswith(" Jr."):
+        return name[:-4].strip()
+    else:
+        return name
+    
+def remove_II_suffix(name):
+    if name.endswith(" II"):
+        return name[:-3].strip()
+    else:
+        return name
 
 
 def get_game_Ids(date):
