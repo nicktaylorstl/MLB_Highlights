@@ -13,6 +13,7 @@ yahoo_rosters_filepath = pv.yahoo_rosters_filepath
 highlights_filepath = pv.highlights_filepath
 game_data_filepath = pv.game_data_filepath
 bigquery_table_id = season_id
+roster_full_data_filepath = pv.roster_full_data_filepath
 
 credentials = pv.credentials
 
@@ -38,9 +39,41 @@ def yahoo_roster_to_bigquery(roster_update):
     else:
         print('Errors occurred during data insertion:', errors)
 
+def full_data_roster_append():
+    def read_existing_keys_and_dates():
+        existing_keys_and_dates = set()
+        with open(roster_full_data_filepath, 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if len(row) >= 2:  # Ensure at least two columns are present
+                    player_key = row[0]
+                    ingestion_date = row[-1]
+                    existing_keys_and_dates.add((player_key, ingestion_date))
+        return existing_keys_and_dates
+    
+    existing_keys_and_dates = read_existing_keys_and_dates()
+
+    with open(f'{full_path}data/rosters.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        data = list(reader)
+
+    ingestion_date = datetime.today().strftime("%Y-%m-%d")
+
+    with open(roster_full_data_filepath, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        for row in data[1:]:
+            player_key = row[0]
+            if (player_key,ingestion_date) not in existing_keys_and_dates:
+                row.append(ingestion_date)
+                writer.writerow(row)
+                existing_keys_and_dates.add((player_key,ingestion_date))
+            else: print(f"{row[25]} already added for {ingestion_date}")
+
+
+
 def update_yahoo_roster(date):
     
-
+    
     
     def remove_parentheses(input_string):
         pattern = r'\s*\([^)]*\)'

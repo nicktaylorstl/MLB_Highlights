@@ -14,6 +14,7 @@ for game in csv_game_ids:
     h.game_insert(game)
 
 r.update_yahoo_roster(pull_date)
+r.full_data_roster_append()
 sq.update_sqlite() 
 sq.update_final_table()
 sq.copy_database()

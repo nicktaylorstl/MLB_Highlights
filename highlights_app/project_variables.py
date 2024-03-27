@@ -5,7 +5,10 @@ season_id = '2024'
 yahoo_rosters_filepath = f"{full_path}data/yahoo_rosters_{season_id}.csv"
 highlights_filepath = f"{full_path}data/highlights_{season_id}.csv"
 game_data_filepath = f"{full_path}data/game_data_{season_id}.csv"
+roster_full_data_filepath = f"{full_path}data/yahoo_rosters_full_data_{season_id}.csv"
 bigquery_table_id = season_id
+
+
 from datetime import datetime, timedelta
 
 credentials = service_account.Credentials.from_service_account_file(
