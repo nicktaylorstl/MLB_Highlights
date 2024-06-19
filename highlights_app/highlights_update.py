@@ -1,6 +1,6 @@
 import statsapi
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 import unidecode
 from google.cloud import bigquery
 import re
@@ -28,27 +28,29 @@ def highlight_to_csv(highlight_str, filepath):
 
 # write game data from one game to a csv
 def game_data_insert(game_id):
-    boxscore = statsapi.boxscore_data(game_id)
-    date = boxscore["gameId"][:10]
-    date = date.replace('/','-')
-    year = int(date[:4])
+    if not is_game_id_present(game_id):    
+        boxscore = statsapi.boxscore_data(game_id)
+        date = boxscore["gameId"][:10]
+        date = date.replace('/','-')
+        year = int(date[:4])
 
-    away_name = boxscore["teamInfo"]["away"]["teamName"]
-    away_id = boxscore["teamInfo"]["away"]["id"]
-    home_name = boxscore["teamInfo"]["home"]["teamName"]
-    home_id = boxscore["teamInfo"]["home"]["id"]
-    away_score = boxscore["away"]["teamStats"]["batting"]["runs"]
-    home_score= boxscore["home"]["teamStats"]["batting"]["runs"]
+        away_name = boxscore["teamInfo"]["away"]["teamName"]
+        away_id = boxscore["teamInfo"]["away"]["id"]
+        home_name = boxscore["teamInfo"]["home"]["teamName"]
+        home_id = boxscore["teamInfo"]["home"]["id"]
+        away_score = boxscore["away"]["teamStats"]["batting"]["runs"]
+        home_score= boxscore["home"]["teamStats"]["batting"]["runs"]
 
-    game_data = [game_id,date,away_name,away_id,away_score,home_name,home_id,home_score,inserted]
+        game_data = [game_id,date,away_name,away_id,away_score,home_name,home_id,home_score,inserted]
+        if away_score == 0 and home_score == 0:
+            return
 
-
-    with open(game_data_filepath, 'a', newline='',encoding='utf-8') as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(game_data)
-        print(f"{game_id} written to CSV")
-    # game_data_to_bigquery([game_data])
-
+        with open(game_data_filepath, 'a', newline='',encoding='utf-8') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(game_data)
+            print(f"{game_id} written to CSV")
+        # game_data_to_bigquery([game_data])
+    else: print(f'Game ID {game_id} already present')
 # write all the highlights from one game to a csv
 def game_highlights_insert(game_id):
     data = statsapi.game_highlight_data(game_id)
@@ -58,6 +60,8 @@ def game_highlights_insert(game_id):
     for highlight in highlights:
         headline = unidecode.unidecode(highlight["headline"])
         date = highlight["date"]
+        date_time = datetime.fromisoformat(date.replace('Z', '+00:00'))
+        date = str(date_time - timedelta(hours=12))
         year = int(date[:4])
         if 'blurb' not in highlight and 'description' not in highlight:
             blurb = "no blurb available"
@@ -84,9 +88,10 @@ def game_highlights_insert(game_id):
 
 
         highlight_list = [game_id,date,player_name,player_id,headline,blurb,description,mp4_url,duration,inserted]
-    
-        highlight_to_csv(highlight_list,highlights_filepath)
-        print(f"highlight for {game_id} written to csv")
+        if not is_highlight_present(highlight_list):
+            highlight_to_csv(highlight_list,highlights_filepath)
+            print(f"highlight for {game_id} written to csv")
+        else: print(f"{headline} previously written to csv ---SKIPPED")
         # highlight_to_bigquery([highlight_list])
 
 def remove_jr_suffix(name):
@@ -141,6 +146,20 @@ def game_data_to_bigquery(gamedata):
     else:
         print('Errors occurred during data insertion:', errors)
 
+def is_highlight_present(highlight_list):
+    new_game_id = highlight_list[0]
+    new_headline = highlight_list[4]
+    
+    with open(highlights_filepath, 'r', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader) #This skips the header row
+
+        for row in csv_reader:
+            game_id = int(row[0])
+            headline = row[4]
+            if new_game_id == game_id and new_headline == headline:
+                return True
+    return False
 
 
 def is_game_id_present(new_game_id):

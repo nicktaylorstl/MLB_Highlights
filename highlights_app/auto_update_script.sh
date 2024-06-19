@@ -6,3 +6,4 @@ cd /D/Documents/GFA/SportsPython/Baseball/CoolWHIPHighlights
 git add .
 git commit -m "daily_update"
 git push
+read -p "Press any key to exit..."

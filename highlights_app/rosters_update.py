@@ -67,8 +67,9 @@ def full_data_roster_append():
                 row.append(ingestion_date)
                 writer.writerow(row)
                 existing_keys_and_dates.add((player_key,ingestion_date))
-            else: print(f"{row[25]} already added for {ingestion_date}")
-
+                
+            else: print(f"{row[25]} already added for {ingestion_date} -- SKIPPED")
+    print("full data roster updated")
 
 
 def update_yahoo_roster(date):
@@ -87,7 +88,7 @@ def update_yahoo_roster(date):
             for row in reader:
                 # Check if the combination of date and player name already exists
                 if row[0] == roster_update[0] and row[4] == roster_update[4]:
-                    print("Duplicate entry found, skipping...")
+                    print(f"{roster_update[4]}-{roster_update[0]} already present -- SKIPPED")
                     return
         
         with open(filepath, 'a', newline='',encoding='utf-8') as csv_file:
@@ -118,5 +119,5 @@ def update_yahoo_roster(date):
             roster_update = date,team_id,team_name,mlb_team_name,player_name,primary_position,inserted
         
             roster_to_csv(roster_update,yahoo_rosters_filepath)
-            print(roster_update)
+    print("daily roster updated")       
             
