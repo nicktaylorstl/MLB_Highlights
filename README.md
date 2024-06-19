@@ -6,3 +6,5 @@ Then it merges this with the daily roster information and copies the database to
 https://github.com/nicktaylorstl/CoolWHIPHighlights
 
  
+To get the yahoo fantasy data I used code from this repository by Edward Distel
+ https://github.com/edwarddistel/yahoo-fantasy-baseball-reader 
